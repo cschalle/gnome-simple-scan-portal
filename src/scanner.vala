@@ -243,8 +243,8 @@ public class Scanner : Object
 
     private List<ScanJob> job_queue;
 
-    /* Handle to SANE device */
-    private Sane.Handle handle;
+    /* Where scanning is done: libsane or the scanner portal */
+    private ScanBackend backend;
     private bool have_handle;
     private string? current_device;
 
@@ -343,9 +343,8 @@ public class Scanner : Object
 
     private void do_redetect ()
     {
-        unowned Sane.Device[] device_list = null;
-        var status = Sane.get_devices (out device_list, false);
-        debug ("sane_get_devices () -> %s", Sane.status_to_string (status));
+        ScanDeviceInfo?[] device_list;
+        var status = backend.get_devices (out device_list);
         if (status != Sane.Status.GOOD)
         {
             warning ("Unable to get SANE devices: %s", Sane.strstatus(status));
@@ -416,7 +415,7 @@ public class Scanner : Object
         notify_event (new NotifyUpdateDevices ((owned) devices));
     }
 
-    private double scale_fixed (int source_min, int source_max, Sane.OptionDescriptor option, int value)
+    private double scale_fixed (int source_min, int source_max, ScanOption option, int value)
     {
         var v = (double) value;
 
@@ -434,7 +433,7 @@ public class Scanner : Object
         return v;
     }
 
-    private int scale_int (int source_min, int source_max, Sane.OptionDescriptor option, int value)
+    private int scale_int (int source_min, int source_max, ScanOption option, int value)
     {
         var v = value;
 
@@ -453,13 +452,13 @@ public class Scanner : Object
         return v;
     }
 
-    private bool set_default_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index)
+    private bool set_default_option (ScanOption option, Sane.Int option_index)
     {
         /* Check if supports automatic option */
         if ((option.cap & Sane.Capability.AUTOMATIC) == 0)
             return false;
 
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_AUTO, null, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_AUTO, null);
         debug ("sane_control_option (%d, SANE_ACTION_SET_AUTO, %s=auto) -> %s", (int) option_index, option.name, Sane.status_to_string (status));
         if (status != Sane.Status.GOOD)
             warning ("Error setting default option %s: %s", option.name, Sane.strstatus(status));
@@ -467,17 +466,17 @@ public class Scanner : Object
         return status == Sane.Status.GOOD;
     }
 
-    private void set_bool_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, bool value, out bool result)
+    private void set_bool_option (ScanOption option, Sane.Int option_index, bool value, out bool result)
     {
         return_if_fail (option.type == Sane.ValueType.BOOL);
 
         Sane.Bool v = (Sane.Bool) value;
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_VALUE, &v, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_VALUE, &v);
         result = (bool) v;
         debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=%s) -> (%s, %s)", (int) option_index, option.name, value ? "SANE_TRUE" : "SANE_FALSE", Sane.status_to_string (status), result ? "SANE_TRUE" : "SANE_FALSE");
     }
 
-    private void set_int_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, int value, out int result)
+    private void set_int_option (ScanOption option, Sane.Int option_index, int value, out int result)
     {
         return_if_fail (option.type == Sane.ValueType.INT);
 
@@ -510,12 +509,12 @@ public class Scanner : Object
             v = (Sane.Int) nearest;
         }
 
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_VALUE, &v, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_VALUE, &v);
         debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=%d) -> (%s, %d)", (int) option_index, option.name, value, Sane.status_to_string (status), (int) v);
         result = (int) v;
     }
 
-    private void set_fixed_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, double value, out double result)
+    private void set_fixed_option (ScanOption option, Sane.Int option_index, double value, out double result)
     {
         double v = value;
         Sane.Fixed v_fixed;
@@ -550,20 +549,20 @@ public class Scanner : Object
         }
 
         v_fixed = Sane.FIX (v);
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_VALUE, &v_fixed, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_VALUE, &v_fixed);
         debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=%f) -> (%s, %f)", (int) option_index, option.name, value, Sane.status_to_string (status), Sane.UNFIX (v_fixed));
 
         result = Sane.UNFIX (v_fixed);
     }
 
-    private void set_fixed_or_int_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, double value, out double result)
+    private void set_fixed_or_int_option (ScanOption option, Sane.Int option_index, double value, out double result)
     {
         if (option.type == Sane.ValueType.FIXED)
-            set_fixed_option (handle, option, option_index, value, out result);
+            set_fixed_option (option, option_index, value, out result);
         else if (option.type == Sane.ValueType.INT)
         {
             int r;
-            set_int_option (handle, option, option_index, (int) Math.round (value), out r);
+            set_int_option (option, option_index, (int) Math.round (value), out r);
             result = r;
         }
         else
@@ -573,12 +572,12 @@ public class Scanner : Object
         }
     }
 
-    private void set_option_to_max (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index)
+    private void set_option_to_max (ScanOption option, Sane.Int option_index)
     {
         if (option.constraint_type != Sane.ConstraintType.RANGE)
             return;
 
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_VALUE, &option.range.max, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_VALUE, &option.range.max);
 
         if (option.type == Sane.ValueType.FIXED)
             debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=option.range.max=%f) -> (%s)", (int) option_index, option.name, Sane.UNFIX (option.range.max), Sane.status_to_string (status));
@@ -586,7 +585,7 @@ public class Scanner : Object
             debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=option.range.max=%d) -> (%s)", (int) option_index, option.name, (int) option.range.max, Sane.status_to_string (status));
     }
 
-    private bool set_string_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, string value, out string result)
+    private bool set_string_option (ScanOption option, Sane.Int option_index, string value, out string result)
     {
         result = "";
 
@@ -597,14 +596,14 @@ public class Scanner : Object
         for (; i < (option.size - 1) && value[i] != '\0'; i++)
             s[i] = value[i];
         s[i] = '\0';
-        var status = Sane.control_option (handle, option_index, Sane.Action.SET_VALUE, s, null);
+        var status = backend.control_option (option_index, Sane.Action.SET_VALUE, s);
         result = (string) s;
         debug ("sane_control_option (%d, SANE_ACTION_SET_VALUE, %s=\"%s\") -> (%s, \"%s\")", (int) option_index, option.name, value, Sane.status_to_string (status), result);
 
         return status == Sane.Status.GOOD;
     }
 
-    private bool set_constrained_string_option (Sane.Handle handle, Sane.OptionDescriptor option, Sane.Int option_index, string[] values, out string result)
+    private bool set_constrained_string_option (ScanOption option, Sane.Int option_index, string[] values, out string result)
     {
         return_val_if_fail (option.type == Sane.ValueType.STRING, false);
         return_val_if_fail (option.constraint_type == Sane.ConstraintType.STRING_LIST, false);
@@ -619,14 +618,14 @@ public class Scanner : Object
             }
 
             if (option.string_list[j] != null)
-                return set_string_option (handle, option, option_index, values[i], out result);
+                return set_string_option (option, option_index, values[i], out result);
         }
 
         result = "";
         return false;
     }
 
-    private void log_option (Sane.Int index, Sane.OptionDescriptor option)
+    private void log_option (Sane.Int index, ScanOption option)
     {
         var s = "Option %d:".printf ((int) index);
 
@@ -798,7 +797,7 @@ public class Scanner : Object
             debug ("  Description: %s", option.desc);
     }
 
-    private static void authorization_cb (string resource, char[] username, char[] password)
+    internal static void authorization_cb (string resource, char[] username, char[] password)
     {
         scanner_object.notify_event (new NotifyRequestAuthorization (resource));
 
@@ -821,11 +820,8 @@ public class Scanner : Object
     {
         if (have_handle)
         {
-            Sane.cancel (handle);
-            debug ("sane_cancel ()");
-
-            Sane.close (handle);
-            debug ("sane_close ()");
+            backend.cancel ();
+            backend.close ();
             have_handle = false;
             options = null;
         }
@@ -911,8 +907,7 @@ public class Scanner : Object
                 return;
             }
 
-            Sane.close (handle);
-            debug ("sane_close ()");
+            backend.close ();
             have_handle = false;
         }
 
@@ -920,8 +915,7 @@ public class Scanner : Object
 
         have_handle = false;
         options = new HashTable <string, int> (str_hash, str_equal);
-        var status = Sane.open (job.device, out handle);
-        debug ("sane_open (\"%s\") -> %s", job.device, Sane.status_to_string (status));
+        var status = backend.open (job.device);
 
         if (status != Sane.Status.GOOD)
         {
@@ -937,7 +931,7 @@ public class Scanner : Object
         state = ScanState.GET_OPTION;
     }
 
-    private void set_adf (ScanJob job, Sane.OptionDescriptor option, Sane.Int index)
+    private void set_adf (ScanJob job, ScanOption option, Sane.Int index)
     {
         string[] adf_sources =
         {
@@ -976,20 +970,20 @@ public class Scanner : Object
 
         if (job.side == ScanSide.FRONT)
         {
-            if (!set_constrained_string_option (handle, option, index, adf_front_sources, null))
-                if (!set_constrained_string_option (handle, option, index, adf_sources, null))
+            if (!set_constrained_string_option (option, index, adf_front_sources, null))
+                if (!set_constrained_string_option (option, index, adf_sources, null))
                     warning ("Unable to set front ADF source, please file a bug");
         }
         else if (job.side == ScanSide.BACK)
         {
-            if (!set_constrained_string_option (handle, option, index, adf_back_sources, null))
-                if (!set_constrained_string_option (handle, option, index, adf_sources, null))
+            if (!set_constrained_string_option (option, index, adf_back_sources, null))
+                if (!set_constrained_string_option (option, index, adf_sources, null))
                     warning ("Unable to set back ADF source, please file a bug");
         }
         else if (job.side == ScanSide.BOTH)
         {
-            if (!set_constrained_string_option (handle, option, index, adf_duplex_sources, null))
-                if (!set_constrained_string_option (handle, option, index, adf_sources, null))
+            if (!set_constrained_string_option (option, index, adf_duplex_sources, null))
+                if (!set_constrained_string_option (option, index, adf_sources, null))
                     warning ("Unable to set duplex ADF source, please file a bug");
         }
     }
@@ -998,7 +992,7 @@ public class Scanner : Object
     {
         var job = (ScanJob) job_queue.data;
 
-        var option = Sane.get_option_descriptor (handle, option_index);
+        var option = backend.get_option_descriptor (option_index);
         debug ("sane_get_option_descriptor (%d)", (int) option_index);
         var index = option_index;
         option_index++;
@@ -1007,10 +1001,10 @@ public class Scanner : Object
         if (option == null)
         {
             /* Pick source */
-            option = get_option_by_name (handle, Sane.NAME_SCAN_SOURCE, out index);
+            option = get_option_by_name (Sane.NAME_SCAN_SOURCE, out index);
             if (option == null)
             {
-                 option = get_option_by_name (handle, "doc-source", out index); /* Samsung unified driver. LP: #892915 */
+                 option = get_option_by_name ("doc-source", out index); /* Samsung unified driver. LP: #892915 */
             }
             if (option != null)
             {
@@ -1030,8 +1024,8 @@ public class Scanner : Object
                 {
                 case ScanType.SINGLE:
                 case ScanType.BATCH:
-                    if (!set_default_option (handle, option, index))
-                        if (!set_constrained_string_option (handle, option, index, flatbed_sources, null))
+                    if (!set_default_option (option, index))
+                        if (!set_constrained_string_option (option, index, flatbed_sources, null))
                         {
                             warning ("Unable to set single page source, trying to set ADF instead");
                             warning ("If Flatbed is existing and it is not set, please file a bug");
@@ -1045,7 +1039,7 @@ public class Scanner : Object
             }
 
             /* Scan mode (before resolution as it tends to affect that */
-            option = get_option_by_name (handle, Sane.NAME_SCAN_MODE, out index);
+            option = get_option_by_name (Sane.NAME_SCAN_MODE, out index);
             if (option != null)
             {
                 /* The names of scan modes often used in drivers, as taken from the sane-backends source */
@@ -1094,15 +1088,15 @@ public class Scanner : Object
                 switch (job.scan_mode)
                 {
                 case ScanMode.COLOR:
-                    if (!set_constrained_string_option (handle, option, index, color_scan_modes, null))
+                    if (!set_constrained_string_option (option, index, color_scan_modes, null))
                         warning ("Unable to set Color mode, please file a bug");
                     break;
                 case ScanMode.GRAY:
-                    if (!set_constrained_string_option (handle, option, index, gray_scan_modes, null))
+                    if (!set_constrained_string_option (option, index, gray_scan_modes, null))
                         warning ("Unable to set Gray mode, please file a bug");
                     break;
                 case ScanMode.LINEART:
-                    if (!set_constrained_string_option (handle, option, index, lineart_scan_modes, null))
+                    if (!set_constrained_string_option (option, index, lineart_scan_modes, null))
                         warning ("Unable to set Lineart mode, please file a bug");
                     break;
                 default:
@@ -1111,21 +1105,21 @@ public class Scanner : Object
             }
 
             /* Duplex */
-            option = get_option_by_name (handle, "duplex", out index);
+            option = get_option_by_name ("duplex", out index);
             if (option == null) /* #161 Lexmark CX310dn Duplex */
-                option = get_option_by_name (handle, "scan-both-sides", out index);
+                option = get_option_by_name ("scan-both-sides", out index);
             if (option != null)
             {
                 if (option.type == Sane.ValueType.BOOL)
-                    set_bool_option (handle, option, index, job.side == ScanSide.BOTH, null);
+                    set_bool_option (option, index, job.side == ScanSide.BOTH, null);
             }
 
             /* Non-standard Epson GT-S50 ADF options */
-            option = get_option_by_name (handle, "adf-mode", out index);
+            option = get_option_by_name ("adf-mode", out index);
 
             /* Support Canon DR-C240 ADF_BOTH options */
             if (option == null)
-                option = get_option_by_name (handle, "ScanMode", out index);
+                option = get_option_by_name ("ScanMode", out index);
             if (option != null)
             {
                 string[] adf_simplex_modes =
@@ -1137,113 +1131,113 @@ public class Scanner : Object
                     "Duplex"
                 };
                 if (job.side == ScanSide.BOTH)
-                    set_constrained_string_option (handle, option, index, adf_duplex_modes, null);
+                    set_constrained_string_option (option, index, adf_duplex_modes, null);
                 else
-                    set_constrained_string_option (handle, option, index, adf_simplex_modes, null);
+                    set_constrained_string_option (option, index, adf_simplex_modes, null);
             }
-            option = get_option_by_name (handle, "adf-auto-scan", out index);
+            option = get_option_by_name ("adf-auto-scan", out index);
             if (option != null)
             {
                 if (option.type == Sane.ValueType.BOOL)
-                    set_bool_option (handle, option, index, true, null);
+                    set_bool_option (option, index, true, null);
             }
 
             /* Multi-page options */
-            option = get_option_by_name (handle, "batch-scan", out index);
+            option = get_option_by_name ("batch-scan", out index);
             if (option != null)
             {
                 if (option.type == Sane.ValueType.BOOL)
-                    set_bool_option (handle, option, index, (job.type != ScanType.SINGLE) && (job.type != ScanType.BATCH), null);
+                    set_bool_option (option, index, (job.type != ScanType.SINGLE) && (job.type != ScanType.BATCH), null);
             }
 
             /* Set resolution and bit depth */
             /* Epson may have separate resolution settings for x and y axes, which is preferable options to set */
-            option = get_option_by_name (handle, Sane.NAME_SCAN_X_RESOLUTION, out index);
+            option = get_option_by_name (Sane.NAME_SCAN_X_RESOLUTION, out index);
             if (option != null && (0 != (option.cap & Sane.Capability.SOFT_SELECT)))  // L4160 has non-selectable separate options
             {
-                set_fixed_or_int_option (handle, option, index, job.dpi, out job.dpi);
-                option = get_option_by_name (handle, Sane.NAME_SCAN_Y_RESOLUTION, out index);
+                set_fixed_or_int_option (option, index, job.dpi, out job.dpi);
+                option = get_option_by_name (Sane.NAME_SCAN_Y_RESOLUTION, out index);
             }
             else
-                option = get_option_by_name (handle, Sane.NAME_SCAN_RESOLUTION, out index);
+                option = get_option_by_name (Sane.NAME_SCAN_RESOLUTION, out index);
             if (option == null) /* #161 Lexmark CX310dn Duplex */
-                option = get_option_by_name (handle, "scan-resolution", out index);
+                option = get_option_by_name ("scan-resolution", out index);
             if (option != null)
             {
-                set_fixed_or_int_option (handle, option, index, job.dpi, out job.dpi);
-                option = get_option_by_name (handle, Sane.NAME_BIT_DEPTH, out index);
+                set_fixed_or_int_option (option, index, job.dpi, out job.dpi);
+                option = get_option_by_name (Sane.NAME_BIT_DEPTH, out index);
                 if (option != null)
                 {
                     if (job.depth > 0)
-                        set_int_option (handle, option, index, job.depth, null);
+                        set_int_option (option, index, job.depth, null);
                 }
             }
 
             /* Set scan area */
-            option = get_option_by_name (handle, Sane.NAME_SCAN_BR_X, out index);
+            option = get_option_by_name (Sane.NAME_SCAN_BR_X, out index);
             if (option != null)
             {
                 if (job.page_width > 0)
-                    set_fixed_or_int_option (handle, option, index, convert_page_size (option, job.page_width, job.dpi), null);
+                    set_fixed_or_int_option (option, index, convert_page_size (option, job.page_width, job.dpi), null);
                 else
-                    set_option_to_max (handle, option, index);
+                    set_option_to_max (option, index);
             }
-            option = get_option_by_name (handle, Sane.NAME_SCAN_BR_Y, out index);
+            option = get_option_by_name (Sane.NAME_SCAN_BR_Y, out index);
             if (option != null)
             {
                 if (job.page_height > 0)
-                    set_fixed_or_int_option (handle, option, index, convert_page_size (option, job.page_height, job.dpi), null);
+                    set_fixed_or_int_option (option, index, convert_page_size (option, job.page_height, job.dpi), null);
                 else
-                    set_option_to_max (handle, option, index);
+                    set_option_to_max (option, index);
             }
             if (job.page_width == 0)
             {
                 /* #90 Fix automatic mode for Epson scanners */
-                option = get_option_by_name (handle, "scan-area", out index);
+                option = get_option_by_name ("scan-area", out index);
                 if (option != null)
-                    set_string_option (handle, option, index, "Maximum", null);
+                    set_string_option (option, index, "Maximum", null);
 
                 /* #264 Enable automatic document size for Brother scanners */
-                option = get_option_by_name (handle, "AutoDocumentSize", out index);
+                option = get_option_by_name ("AutoDocumentSize", out index);
                 if (option != null)
-                    set_bool_option (handle, option, index, true, null);
+                    set_bool_option (option, index, true, null);
             }
             /* Set page size */
-            option = get_option_by_name (handle, Sane.NAME_PAGE_WIDTH, out index);
+            option = get_option_by_name (Sane.NAME_PAGE_WIDTH, out index);
             if (option != null && job.page_width > 0.0)
-                set_fixed_or_int_option (handle, option, index, convert_page_size (option, job.page_width, job.dpi), null);
-            option = get_option_by_name (handle, Sane.NAME_PAGE_HEIGHT, out index);
+                set_fixed_or_int_option (option, index, convert_page_size (option, job.page_width, job.dpi), null);
+            option = get_option_by_name (Sane.NAME_PAGE_HEIGHT, out index);
             if (option != null && job.page_height > 0.0)
-                set_fixed_or_int_option (handle, option, index, convert_page_size (option, job.page_height, job.dpi), null);
+                set_fixed_or_int_option (option, index, convert_page_size (option, job.page_height, job.dpi), null);
 
-            option = get_option_by_name (handle, Sane.NAME_BRIGHTNESS, out index);
+            option = get_option_by_name (Sane.NAME_BRIGHTNESS, out index);
             if (option != null)
             {
                 if (option.type == Sane.ValueType.FIXED)
                 {
                     var brightness = scale_fixed (-100, 100, option, job.brightness);
-                    set_fixed_option (handle, option, index, brightness, null);
+                    set_fixed_option (option, index, brightness, null);
                 }
                 else if (option.type == Sane.ValueType.INT)
                 {
                     var brightness = scale_int (-100, 100, option, job.brightness);
-                    set_int_option (handle, option, index, brightness, null);
+                    set_int_option (option, index, brightness, null);
                 }
                 else
                     warning ("Unable to set brightness, please file a bug");
             }
-            option = get_option_by_name (handle, Sane.NAME_CONTRAST, out index);
+            option = get_option_by_name (Sane.NAME_CONTRAST, out index);
             if (option != null)
             {
                 if (option.type == Sane.ValueType.FIXED)
                 {
                     var contrast = scale_fixed (-100, 100, option, job.contrast);
-                    set_fixed_option (handle, option, index, contrast, null);
+                    set_fixed_option (option, index, contrast, null);
                 }
                 else if (option.type == Sane.ValueType.INT)
                 {
                     var contrast = scale_int (-100, 100, option, job.contrast);
-                    set_int_option (handle, option, index, contrast, null);
+                    set_int_option (option, index, contrast, null);
                 }
                 else
                     warning ("Unable to set contrast, please file a bug");
@@ -1252,21 +1246,21 @@ public class Scanner : Object
             /* Test scanner options (hoping will not effect other scanners...) */
             if (current_device == "test")
             {
-                option = get_option_by_name (handle, "hand-scanner", out index);
+                option = get_option_by_name ("hand-scanner", out index);
                 if (option != null)
-                    set_bool_option (handle, option, index, false, null);
-                option = get_option_by_name (handle, "three-pass", out index);
+                    set_bool_option (option, index, false, null);
+                option = get_option_by_name ("three-pass", out index);
                 if (option != null)
-                    set_bool_option (handle, option, index, false, null);
-                option = get_option_by_name (handle, "test-picture", out index);
+                    set_bool_option (option, index, false, null);
+                option = get_option_by_name ("test-picture", out index);
                 if (option != null)
-                    set_string_option (handle, option, index, "Color pattern", null);
-                option = get_option_by_name (handle, "read-delay", out index);
+                    set_string_option (option, index, "Color pattern", null);
+                option = get_option_by_name ("read-delay", out index);
                 if (option != null)
-                    set_bool_option (handle, option, index, true, null);
-                option = get_option_by_name (handle, "read-delay-duration", out index);
+                    set_bool_option (option, index, true, null);
+                option = get_option_by_name ("read-delay-duration", out index);
                 if (option != null)
-                    set_int_option (handle, option, index, 200000, null);
+                    set_int_option (option, index, 200000, null);
             }
 
             state = ScanState.START;
@@ -1286,7 +1280,7 @@ public class Scanner : Object
         options.insert (option.name, (int) index);
     }
 
-    private double convert_page_size (Sane.OptionDescriptor option, double size, double dpi)
+    private double convert_page_size (ScanOption option, double size, double dpi)
     {
         if (option.unit == Sane.Unit.PIXEL)
             return dpi * size / 254.0;
@@ -1299,13 +1293,13 @@ public class Scanner : Object
         }
     }
 
-    private Sane.OptionDescriptor? get_option_by_name (Sane.Handle handle, string name, out int index)
+    private ScanOption? get_option_by_name (string name, out int index)
     {
         index = options.lookup (name);
         if (index == 0)
             return null;
 
-        var option_descriptor = Sane.get_option_descriptor (handle, index);
+        var option_descriptor = backend.get_option_descriptor (index);
         /*
         The Sane.Capability.INACTIVE capability indicates that
         the option is not currently active (e.g., because it's meaningful
@@ -1321,8 +1315,7 @@ public class Scanner : Object
 
     private void do_complete_document ()
     {
-        Sane.cancel (handle);
-        debug ("sane_cancel ()");
+        backend.cancel ();
 
         job_queue.remove_link (job_queue);
 
@@ -1348,7 +1341,7 @@ public class Scanner : Object
 
         notify_event (new NotifyExpectPage ());
 
-        status = Sane.start (handle);
+        status = backend.start ();
         debug ("sane_start (page=%d, pass=%d) -> %s", page_number, pass_number, Sane.status_to_string (status));
         if (status == Sane.Status.GOOD)
             state = ScanState.GET_PARAMETERS;
@@ -1362,7 +1355,7 @@ public class Scanner : Object
                    to continue scanning more pages. */
                 debug ("sane_start received NO_DOCS in BATCH mode -> cancelling and restarting");
 
-                Sane.cancel(handle);
+                backend.cancel ();
 
                 state = ScanState.START;
                 return;
@@ -1401,8 +1394,7 @@ public class Scanner : Object
 
     private void do_get_parameters ()
     {
-        var status = Sane.get_parameters (handle, out parameters);
-        debug ("sane_get_parameters () -> %s", Sane.status_to_string (status));
+        var status = backend.get_parameters (out parameters);
         if (status != Sane.Status.GOOD)
         {
             warning ("Unable to get device parameters: %s", Sane.strstatus (status));
@@ -1487,7 +1479,7 @@ public class Scanner : Object
 
         Sane.Int n_read;
         var b = (uchar *) buffer;
-        var status = Sane.read (handle, (uint8[]) (b + n_used), (Sane.Int) n_to_read, out n_read);
+        var status = backend.read ((uint8*) (b + n_used), (Sane.Int) n_to_read, out n_read);
         debug ("sane_read (%d) -> (%s, %d)", n_to_read, Sane.status_to_string (status), (int) n_read);
 
         /* Completed read */
@@ -1630,18 +1622,9 @@ public class Scanner : Object
     {
         state = ScanState.IDLE;
 
-        Sane.Int version_code;
-        var status = Sane.init (out version_code, authorization_cb);
-        debug ("sane_init () -> %s", Sane.status_to_string (status));
-        if (status != Sane.Status.GOOD)
-        {
-            warning ("Unable to initialize SANE backend: %s", Sane.strstatus(status));
+        backend = new SaneBackend ();
+        if (!backend.init ())
             return null;
-        }
-        debug ("SANE version %d.%d.%d",
-               Sane.VERSION_MAJOR(version_code),
-               Sane.VERSION_MINOR(version_code),
-               Sane.VERSION_BUILD(version_code));
 
         /* Scan for devices on first start */
         redetect ();
@@ -1830,7 +1813,7 @@ public class Scanner : Object
             thread = null;
         }
 
-        Sane.exit ();
-        debug ("sane_exit ()");
+        if (backend != null)
+            backend.exit ();
     }
 }
