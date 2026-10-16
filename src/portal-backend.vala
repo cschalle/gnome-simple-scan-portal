@@ -29,6 +29,7 @@ public class PortalBackend : Object, ScanBackend
     {
         public string state;
         public Variant details;
+        public uint32 frame;
     }
 
     private DBusConnection? bus;
@@ -37,6 +38,10 @@ public class PortalBackend : Object, ScanBackend
     private AsyncQueue<Event> frame_events = new AsyncQueue<Event> ();
     private AsyncQueue<Variant> responses = new AsyncQueue<Variant> ();
     private int request_counter;
+
+    /* The number of the latest frame whose end was seen: events numbered at or below it belong to
+     * a frame that is over, such as one that was cancelled, and are dropped. */
+    private uint32 done_frame;
 
     private string? session;
     private ScanOption[]? options;
@@ -80,6 +85,24 @@ public class PortalBackend : Object, ScanBackend
         }
     }
 
+    /* The next event of the frame in progress, or null after the timeout */
+    private Event? next_event (int64 timeout_us)
+    {
+        var deadline = get_monotonic_time () + timeout_us;
+        while (true)
+        {
+            var remaining = deadline - get_monotonic_time ();
+            var event = frame_events.timeout_pop (remaining > 0 ? (uint64) remaining : 0);
+            if (event == null)
+                return null;
+            if (event.frame != 0 && event.frame <= done_frame)
+                continue;
+            if (event.frame != 0 && event.state != "started")
+                done_frame = event.frame;
+            return event;
+        }
+    }
+
     /* Signal handlers run in the main thread */
     private void frame_event_cb (DBusConnection connection, string? sender, string object_path, string interface_name,
                                  string signal_name, Variant params)
@@ -96,6 +119,8 @@ public class PortalBackend : Object, ScanBackend
         var event = new Event ();
         event.state = state;
         event.details = details;
+        var frame = details.lookup_value ("frame", VariantType.UINT32);
+        event.frame = frame != null ? frame.get_uint32 () : 0;
         frame_events.push (event);
     }
 
@@ -193,7 +218,7 @@ public class PortalBackend : Object, ScanBackend
                 var details = scanner.get_child_value (1);
                 info.vendor = dict_string (details, "vendor") ?? "";
                 info.model = dict_string (details, "model") ?? dict_string (details, "name") ?? info.name;
-                info.type = dict_string (details, "kind") ?? "";
+                info.type = dict_string (details, "type") ?? dict_string (details, "kind") ?? "";
                 list.append (info);
             }
             return Sane.Status.GOOD;
@@ -236,6 +261,7 @@ public class PortalBackend : Object, ScanBackend
         }
 
         while (frame_events.try_pop () != null);
+        done_frame = 0;
         return fetch_options ();
     }
 
@@ -289,7 +315,7 @@ public class PortalBackend : Object, ScanBackend
             /* Wait for the portal to confirm, so its next frame does not meet this one's events */
             Event? event = null;
             do
-                event = frame_events.timeout_pop (FINISH_TIMEOUT_US);
+                event = next_event (FINISH_TIMEOUT_US);
             while (event != null && event.state == "started");
         }
     }
@@ -324,7 +350,9 @@ public class PortalBackend : Object, ScanBackend
                 case "advanced":
                     cap |= Sane.Capability.ADVANCED;
                     break;
-                /* "automatic" is left out: SetOptions has no way to ask for the automatic value */
+                case "automatic":
+                    cap |= Sane.Capability.AUTOMATIC;
+                    break;
                 }
             }
         }
@@ -490,12 +518,20 @@ public class PortalBackend : Object, ScanBackend
         switch (action)
         {
         case Sane.Action.SET_AUTO:
-            return Sane.Status.UNSUPPORTED;
+            return send_option (option, auto_value (), null);
         case Sane.Action.GET_VALUE:
             return get_value (option, value);
         default:
             return set_value (option, value);
         }
+    }
+
+    /* SetOptions takes this in place of a value to pick the option's own */
+    private static Variant auto_value ()
+    {
+        var auto = new VariantBuilder (new VariantType ("a{sv}"));
+        auto.add ("{sv}", "auto", new Variant.boolean (true));
+        return auto.end ();
     }
 
     private Sane.Status get_value (ScanOption option, void *value)
@@ -567,6 +603,12 @@ public class PortalBackend : Object, ScanBackend
             return Sane.Status.INVAL;
         }
 
+        return send_option (option, v, value);
+    }
+
+    /* Set an option, and put the value it ended up with where SANE's caller expects it */
+    private Sane.Status send_option (ScanOption option, Variant v, void *value)
+    {
         try
         {
             var values = new VariantBuilder (new VariantType ("a(sv)"));
@@ -635,7 +677,7 @@ public class PortalBackend : Object, ScanBackend
         }
         frame_running = true;
 
-        var event = frame_events.timeout_pop (START_TIMEOUT_US);
+        var event = next_event (START_TIMEOUT_US);
         if (event == null)
         {
             warning ("The scanner did not start");
@@ -709,7 +751,7 @@ public class PortalBackend : Object, ScanBackend
         /* The pipe ending is not the end of the frame: the portal says how it went */
         Posix.close (pipe_fd);
         pipe_fd = -1;
-        var event = frame_events.timeout_pop (FINISH_TIMEOUT_US);
+        var event = next_event (FINISH_TIMEOUT_US);
         frame_running = false;
         if (event == null)
         {
