@@ -1622,7 +1622,11 @@ public class Scanner : Object
     {
         state = ScanState.IDLE;
 
-        backend = new SaneBackend ();
+        /* SANE in this process, unless asked to use the scanner portal */
+        if (Environment.get_variable ("SIMPLE_SCAN_BACKEND") == "portal")
+            backend = new PortalBackend ();
+        else
+            backend = new SaneBackend ();
         if (!backend.init ())
             return null;
 

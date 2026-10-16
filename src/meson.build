@@ -1,5 +1,5 @@
 vala_args = [ '--pkg=posix', '--vapidir=' + meson.current_source_dir () ]
-dependencies = [ glib_dep, gtk_dep, libadwaita_dep, zlib_dep, cairo_dep, gdk_pixbuf_dep, gusb_dep, sane_dep ]
+dependencies = [ glib_dep, gtk_dep, libadwaita_dep, zlib_dep, cairo_dep, gdk_pixbuf_dep, gusb_dep, sane_dep, gio_unix_dep ]
 if colord_dep.found ()
     vala_args += [ '-D', 'HAVE_COLORD' ]
     dependencies += colord_dep
@@ -29,6 +29,7 @@ simple_scan = executable ('simple-scan',
                             'simple-scan.vala',
                             'scan-backend.vala',
                             'sane-backend.vala',
+                            'portal-backend.vala',
                             'scanner.vala',
                             'screensaver.vala',
                             'autosave-manager.vala' ] + resources,
