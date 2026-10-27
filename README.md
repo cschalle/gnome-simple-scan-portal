@@ -4,11 +4,12 @@
 `scanner-portal`: commits that put libsane behind a `ScanBackend` interface and add
 `PortalBackend`, which talks to the draft `org.freedesktop.portal.Scanner` interface. This
 directory holds only the application port, its flatpak manifests and test results. The portal
-itself is not here.
+itself is in https://github.com/cschalle/flatpak-scanner-portal.
 
 ## Where the portal code is
 
-All of it is hosted in the negative-vibes repository, `../negative-vibes`:
+The portal is developed in https://github.com/cschalle/flatpak-scanner-portal. The files below
+are from the negative-vibes repository, `../negative-vibes`, and may not all have moved yet:
 
 - `docs/scanner-portal/PROPOSAL.md`: the proposal, with what was tested and what is open.
 - `docs/scanner-portal/org.freedesktop.portal.Scanner.xml` and
