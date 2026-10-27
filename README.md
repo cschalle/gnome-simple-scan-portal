@@ -8,15 +8,17 @@ itself is in https://github.com/cschalle/flatpak-scanner-portal.
 
 ## Where the portal code is
 
-The portal is developed in https://github.com/cschalle/flatpak-scanner-portal. The files below
-are from the negative-vibes repository, `../negative-vibes`, and may not all have moved yet:
+The portal is in https://github.com/cschalle/flatpak-scanner-portal:
 
-- `docs/scanner-portal/PROPOSAL.md`: the proposal, with what was tested and what is open.
-- `docs/scanner-portal/org.freedesktop.portal.Scanner.xml` and
-  `org.freedesktop.impl.portal.Scanner.xml`: the draft D-Bus interfaces.
-- `docs/scanner-portal/HARDWARE-TEST.md`: the hardware test.
-- `crates/nv-sane-portal` (client) and `crates/nv-portal-proto` (prototype service).
+- `docs/PROPOSAL.md`: the proposal, with what was tested and what is open.
+- `docs/org.freedesktop.portal.Scanner.xml` and `docs/org.freedesktop.impl.portal.Scanner.xml`:
+  the draft D-Bus interfaces.
+- `docs/HARDWARE-TEST.md`: the hardware test.
 - `tests/` and `tools/portal-hw-check.sh`: the scenario checks that run against any frontend.
+
+The prototype service and the portal client are Rust crates that stay in the negative-vibes
+repository, https://github.com/cschalle/negative-vibes: `crates/nv-portal-proto` (service) and
+`crates/nv-sane-portal` (client).
 
 The C frontend and the GNOME and GTK dialogs are in
 https://github.com/cschalle/flatpak-scanner-portal as patch series for xdg-desktop-portal,
