@@ -178,6 +178,8 @@ public class PortalBackend : Object, ScanBackend
             var opts = new VariantBuilder (new VariantType ("a{sv}"));
             opts.add ("{sv}", "handle_token", new Variant.string (token));
             opts.add ("{sv}", "multiple", new Variant.boolean (true));
+            /* Scanners for documents: the portal does not offer film scanners, which are for negatives */
+            opts.add ("{sv}", "any_capabilities", new Variant.strv ({ "flatbed", "adf" }));
             call ("SelectScanners", new Variant ("(sa{sv})", "", opts));
 
             var response = responses.timeout_pop (SELECT_TIMEOUT_US);
