@@ -74,6 +74,8 @@ public class AppWindow : Adw.ApplicationWindow
     [GtkChild]
     private unowned Gtk.DropDown device_drop_down;
     [GtkChild]
+    private unowned Gtk.Button select_devices_button;
+    [GtkChild]
     private unowned Gtk.Box main_vbox;
     [GtkChild]
     private unowned Gtk.Button save_button;
@@ -163,6 +165,7 @@ public class AppWindow : Adw.ApplicationWindow
     public signal void start_scan (string? device, ScanOptions options);
     public signal void stop_scan ();
     public signal void redetect ();
+    public signal void select_devices ();
     
     static string get_device_label (ScanDevice device) {
         return device.label;
@@ -171,6 +174,8 @@ public class AppWindow : Adw.ApplicationWindow
     public AppWindow ()
     {
         settings = new Settings ("org.gnome.SimpleScan");
+
+        select_devices_button.visible = Scanner.can_select_devices ();
 
         device_model = new ListStore (typeof (ScanDevice));
         device_drop_down.model = device_model;
@@ -795,6 +800,14 @@ public class AppWindow : Adw.ApplicationWindow
         have_devices = false;
         update_scan_status ();
         redetect ();
+    }
+
+    [GtkCallback]
+    private void select_devices_button_clicked_cb (Gtk.Button button)
+    {
+        have_devices = false;
+        update_scan_status ();
+        select_devices ();
     }
 
     private void scan (ScanOptions options)

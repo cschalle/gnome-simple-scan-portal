@@ -34,6 +34,11 @@ public class SaneBackend : Object, ScanBackend
         debug ("sane_exit ()");
     }
 
+    public bool select_devices ()
+    {
+        return false;
+    }
+
     public Sane.Status get_devices (out ScanDeviceInfo?[] devices)
     {
         unowned Sane.Device[] device_list = null;

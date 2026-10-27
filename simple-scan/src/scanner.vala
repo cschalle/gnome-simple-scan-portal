@@ -240,6 +240,7 @@ public class Scanner : Object
 
     private ScanState state;
     private bool need_redetect;
+    private bool need_select;
 
     private List<ScanJob> job_queue;
 
@@ -343,6 +344,12 @@ public class Scanner : Object
 
     private void do_redetect ()
     {
+        if (need_select)
+        {
+            need_select = false;
+            backend.select_devices ();
+        }
+
         ScanDeviceInfo?[] device_list;
         var status = backend.get_devices (out device_list);
         if (status != Sane.Status.GOOD)
@@ -1689,6 +1696,18 @@ public class Scanner : Object
         debug ("Requesting redetection of scan devices");
 
         request_queue.push (new RequestRedetect ());
+    }
+
+    /* The scanner portal lets the user pick the scanners; libsane has no such choice */
+    public static bool can_select_devices ()
+    {
+        return Environment.get_variable ("SIMPLE_SCAN_BACKEND") == "portal";
+    }
+
+    public void select_devices ()
+    {
+        need_select = true;
+        redetect ();
     }
 
     public bool is_scanning ()

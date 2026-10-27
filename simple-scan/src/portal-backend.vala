@@ -230,6 +230,11 @@ public class PortalBackend : Object, ScanBackend
         }
     }
 
+    public bool select_devices ()
+    {
+        return select_scanners ();
+    }
+
     public Sane.Status get_devices (out ScanDeviceInfo?[] devices)
     {
         List<ScanDeviceInfo> list;

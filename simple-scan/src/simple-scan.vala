@@ -59,6 +59,7 @@ public class SimpleScan : Adw.Application
         app.start_scan.connect (scan_cb);
         app.stop_scan.connect (cancel_cb);
         app.redetect.connect (redetect_cb);
+        app.select_devices.connect (select_devices_cb);
 
         scanner = Scanner.get_instance ();
         scanner.update_devices.connect (update_scan_devices_cb);
@@ -1855,6 +1856,11 @@ public class SimpleScan : Adw.Application
     private void redetect_cb (AppWindow ui)
     {
         scanner.redetect ();
+    }
+
+    private void select_devices_cb (AppWindow ui)
+    {
+        scanner.select_devices ();
     }
 
 

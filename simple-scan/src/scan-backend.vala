@@ -50,6 +50,9 @@ public interface ScanBackend : Object
 
     public abstract Sane.Status get_devices (out ScanDeviceInfo?[] devices);
 
+    /* Let the user choose which scanners the application may use, for backends that have such a choice */
+    public abstract bool select_devices ();
+
     public abstract Sane.Status open (string device);
     public abstract void close ();
     public abstract void cancel ();

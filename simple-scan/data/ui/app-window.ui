@@ -284,6 +284,15 @@
                                 <signal name="clicked" handler="redetect_button_clicked_cb" swapped="no"/>
                               </object>
                             </child>
+                            <child>
+                              <object class="GtkButton" id="select_devices_button">
+                                <property name="visible">False</property>
+                                <property name="tooltip_text" translatable="yes" comments="Tooltip for the button that chooses which scanners the application may use">Choose Scanners…</property>
+                                <property name="icon_name">list-add-symbolic</property>
+
+                                <signal name="clicked" handler="select_devices_button_clicked_cb" swapped="no"/>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
