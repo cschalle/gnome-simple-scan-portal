@@ -18,9 +18,11 @@ are from the negative-vibes repository, `../negative-vibes`, and may not all hav
 - `crates/nv-sane-portal` (client) and `crates/nv-portal-proto` (prototype service).
 - `tests/` and `tools/portal-hw-check.sh`: the scenario checks that run against any frontend.
 
-The C frontend and the dialogs are branches of clones of xdg-desktop-portal,
-xdg-desktop-portal-gnome and xdg-desktop-portal-gtk, kept in `../portal-research`; the RPM
-build script and the flatpak repository are there too. None of it is pushed yet.
+The C frontend and the GNOME and GTK dialogs are in
+https://github.com/cschalle/flatpak-scanner-portal as patch series for xdg-desktop-portal,
+xdg-desktop-portal-gnome and xdg-desktop-portal-gtk, together with the RPM build script. The
+branches they come from are in clones kept in `../portal-research`, along with the flatpak
+repository; those branches are not pushed.
 
 The port follows the draft as of the second change round (automatic values as the vardict
 `{'auto': true}`, a `frame` number on `FrameEvent`, `type` in the scanner info) and the two-phase
