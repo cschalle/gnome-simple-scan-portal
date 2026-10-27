@@ -18,7 +18,7 @@ on:
 env:
   # The application port lives in its own clone (see .gitignore), which the
   # manifests pull in as the "simple-scan" dir source.
-  SIMPLE_SCAN_REPO: https://gitlab.com/cschalle/simple-scan.git
+  SIMPLE_SCAN_REPO: https://github.com/cschalle/gnome-simple-scan-clone-.git
   SIMPLE_SCAN_REF: scanner-portal
 
 jobs:
