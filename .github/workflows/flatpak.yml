@@ -1,0 +1,47 @@
+name: Flatpak
+
+# Only code and build changes build a flatpak; README, notes and results do not.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'final/**'
+      - '*.json'
+      - '.github/workflows/flatpak.yml'
+  pull_request:
+    paths:
+      - 'final/**'
+      - '*.json'
+      - '.github/workflows/flatpak.yml'
+  workflow_dispatch:
+
+env:
+  # The application port lives in its own clone (see .gitignore), which the
+  # manifests pull in as the "simple-scan" dir source.
+  SIMPLE_SCAN_REPO: https://gitlab.com/cschalle/simple-scan.git
+  SIMPLE_SCAN_REF: scanner-portal
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
+      options: --privileged
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest:
+          - org.gnome.SimpleScan.Portal.json
+          - org.gnome.SimpleScan.PortalTest.json
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the Simple Scan port
+        run: git clone --depth 1 --branch "$SIMPLE_SCAN_REF" "$SIMPLE_SCAN_REPO" simple-scan
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: simple-scan-${{ matrix.manifest }}.flatpak
+          manifest-path: ${{ matrix.manifest }}
+          cache-key: flatpak-builder-${{ matrix.manifest }}-${{ github.sha }}
+          restore-cache: true
