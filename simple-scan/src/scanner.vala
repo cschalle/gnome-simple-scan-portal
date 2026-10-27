@@ -377,6 +377,10 @@ public class Scanner : Object
             if (device_list[i].type == "virtual device")
                 continue;
 
+            /* Film scanners are for negatives, which Simple Scan does not handle. */
+            if (device_list[i].type == "film scanner")
+                continue;
+
             debug ("Device: name=\"%s\" vendor=\"%s\" model=\"%s\" type=\"%s\"",
                    device_list[i].name, device_list[i].vendor, device_list[i].model, device_list[i].type);
 

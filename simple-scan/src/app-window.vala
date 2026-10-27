@@ -59,6 +59,7 @@ public class AppWindow : Adw.ApplicationWindow
 
     private bool setting_devices;
     private bool user_selected_device;
+    private bool choosing_devices;
 
     [GtkChild]
     private unowned Gtk.PopoverMenu page_menu;
@@ -282,6 +283,18 @@ public class AppWindow : Adw.ApplicationWindow
             a) for the typical amount of scanners that would probably be overkill 
             b) we rescan only on user action so this is rarely called
             */
+            var known = new GenericSet<string> (str_hash, str_equal);
+            for (uint i = 0; i < device_model.get_n_items (); i++)
+                known.add (((ScanDevice) device_model.get_item (i)).name);
+            var chosen = choosing_devices;
+            choosing_devices = false;
+            string? new_device = null;
+            foreach (var device in devices)
+            {
+                if (new_device == null && !known.contains (device.name))
+                    new_device = device.name;
+            }
+
             device_model.remove_all ();
 
             /* Add new devices */
@@ -292,7 +305,14 @@ public class AppWindow : Adw.ApplicationWindow
 
             /* Select the previously selected device or the first available device */
             var device_name = settings.get_string ("selected-device");
-            
+
+            /* The scanner the user just chose is the one to scan with, not the one used before */
+            if (chosen && new_device != null)
+            {
+                device_name = new_device;
+                settings.set_string ("selected-device", device_name);
+            }
+
             uint position = 0;
             if (device_name != null && find_device_by_name (device_name, out position) != null)
                 device_drop_down.selected = position;
@@ -806,6 +826,7 @@ public class AppWindow : Adw.ApplicationWindow
     private void select_devices_button_clicked_cb (Gtk.Button button)
     {
         have_devices = false;
+        choosing_devices = true;
         update_scan_status ();
         select_devices ();
     }
