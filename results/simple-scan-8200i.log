@@ -1,0 +1,487 @@
+[+0.00s] DEBUG: simple-scan.vala:2035: Starting simple-scan 50.0, PID=2
+[+0.01s] DEBUG: org.gtk.vfs.MountTracker.listMountableInfo call failed: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown (g-dbus-error-quark, 2)
+
+[+0.01s] DEBUG: _g_io_module_get_default: Found default implementation local (GLocalVfs) for ‘gio-vfs’
+
+(simple-scan:2): Gtk-WARNING **: 13:48:25.377: Unable to acquire the address of the accessibility bus: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: org.freedesktop.DBus.Error.ServiceUnknown. If you are attempting to run GTK without a11y support, GTK_A11Y should be set to 'none'.
+[+0.08s] DEBUG: _g_io_module_get_default: Found default implementation memory (GMemorySettingsBackend) for ‘gsettings-backend’
+[+0.09s] CRITICAL: Trying to set an active toggle with the name '1' in an AdwToggleGroup, but such a toggle does not exist
+[+0.09s] DEBUG: app-window.vala:1509: Loading state from /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+0.09s] WARNING: scanner.vala:1742: Unknown ScanType: . Please report this error.
+[+0.09s] DEBUG: app-window.vala:1454: Restoring window to 600x400 pixels
+MESA-EGL: warning: failed to get driver name for fd -1
+MESA-EGL: warning: MESA-LOADER: failed to retrieve device information
+MESA-EGL: warning: failed to get driver name for fd -1
+MESA: error: ZINK: failed to choose pdev
+MESA-EGL: warning: egl: failed to create dri2 screen
+[+0.51s] DEBUG: portal-backend.vala:69: Using the scanner portal on org.freedesktop.NvPortalProto
+[+0.51s] DEBUG: scanner.vala:1689: Requesting redetection of scan devices
+[+0.51s] DEBUG: scanner.vala:859: Processing request
+[+0.69s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+0.69s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.5R3PX3”: No such file or directory
+[+0.69s] DEBUG: portal-backend.vala:167: SelectScanners -> response 0
+[+0.69s] DEBUG: scanner.vala:373: Device: name="12722a6aa885c736" vendor="Plustek" model="OpticFilm 8200i" type="usb"
+[+0.84s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+0.84s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.KXX7W3”: No such file or directory
+[+1.02s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+1.02s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.L1OGX3”: No such file or directory
+[+2.85s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+2.85s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.XJR7W3”: No such file or directory
+[+4.44s] DEBUG: simple-scan.vala:1841: Requesting scan at 300 dpi from device '12722a6aa885c736'
+[+4.44s] DEBUG: scanner.vala:1780: Scanner.scan ("12722a6aa885c736", dpi=300, scan_mode=ScanMode.COLOR, depth=8, type=single, side=both, paper_width=0, paper_height=0, brightness=0, contrast=0, delay=0ms)
+[+4.44s] DEBUG: scanner.vala:859: Processing request
+[+4.44s] DEBUG: portal-backend.vala:230: OpenScanner ("12722a6aa885c736") -> /org/freedesktop/portal/desktop/session/1_331/scanner1
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (0)
+[+4.44s] DEBUG: scanner.vala:794: Option 0: name='(null)' title='Number of options' type=int size=4 cap=soft-detect
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (1)
+[+4.44s] DEBUG: scanner.vala:794: Option 1: name='(null)' title='Scan Mode' type=group size=1
+[+4.44s] DEBUG: scanner.vala:797:   Description: 
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (2)
+[+4.44s] DEBUG: scanner.vala:794: Option 2: name='mode' title='Scan mode' type=string size=256 values=["Color", "Gray", "Infrared", "Color+Infrared"] cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Selects the scan mode. Color+Infrared returns two frames, the colour image and then its infrared plane (gray); scanimage cannot save it (it aborts on the second frame).
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (3)
+[+4.44s] DEBUG: scanner.vala:794: Option 3: name='depth' title='Bit depth' type=int size=4 values=[8, 16] cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Number of bits per sample, typical values are 1 for "line-art" and 8 for multibit scans.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (4)
+[+4.44s] DEBUG: scanner.vala:794: Option 4: name='resolution' title='Scan resolution' type=int size=4 unit=dpi values=[300, 600, 1200, 2400, 3600, 7200] cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Sets the resolution of the scanned image.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (5)
+[+4.44s] DEBUG: scanner.vala:794: Option 5: name='ir-clean' title='Infrared dust removal' type=bool size=4 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Make a second pass with infrared illumination and repair dust and scratches in the colour image. Doubles the scan time.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (6)
+[+4.44s] DEBUG: scanner.vala:794: Option 6: name='auto-wb' title='Automatic white balance' type=bool size=4 cap=soft-select,soft-detect,advanced
+[+4.44s] DEBUG: scanner.vala:797:   Description: Scale the colour channels so their means match. Off delivers the sensor's calibrated response unchanged, which negative conversion and colour profiling need: the balance otherwise varies with picture content and clips highlights.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (7)
+[+4.44s] DEBUG: scanner.vala:794: Option 7: name='exposure' title='Exposure' type=fixed size=4 min=1.000000, max=4.000000, quant=3276 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Light integration time as a multiple of the default. Raises every channel by the same factor; the carriage slows down to keep the geometry, so the scan takes proportionally longer. For dense negatives and dark slides.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (8)
+[+4.44s] DEBUG: scanner.vala:794: Option 8: name='(null)' title='Geometry' type=group size=1
+[+4.44s] DEBUG: scanner.vala:797:   Description: 
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (9)
+[+4.44s] DEBUG: scanner.vala:794: Option 9: name='tl-x' title='Top-left x' type=fixed size=4 unit=mm min=0.000000, max=36.500000, quant=0 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Top-left x position of scan area.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (10)
+[+4.44s] DEBUG: scanner.vala:794: Option 10: name='tl-y' title='Top-left y' type=fixed size=4 unit=mm min=0.000000, max=27.199997, quant=0 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Top-left y position of scan area.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (11)
+[+4.44s] DEBUG: scanner.vala:794: Option 11: name='br-x' title='Bottom-right x' type=fixed size=4 unit=mm min=0.000000, max=36.500000, quant=0 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Bottom-right x position of scan area.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (12)
+[+4.44s] DEBUG: scanner.vala:794: Option 12: name='br-y' title='Bottom-right y' type=fixed size=4 unit=mm min=0.000000, max=27.199997, quant=0 cap=soft-select,soft-detect
+[+4.44s] DEBUG: scanner.vala:797:   Description: Bottom-right y position of scan area.
+[+4.44s] DEBUG: scanner.vala:996: sane_get_option_descriptor (13)
+[+4.44s] DEBUG: scanner.vala:601: sane_control_option (2, SANE_ACTION_SET_VALUE, mode="Color") -> (SANE_STATUS_GOOD, "Color")
+[+4.44s] DEBUG: scanner.vala:513: sane_control_option (4, SANE_ACTION_SET_VALUE, resolution=300) -> (SANE_STATUS_GOOD, 300)
+[+4.44s] DEBUG: scanner.vala:513: sane_control_option (3, SANE_ACTION_SET_VALUE, depth=8) -> (SANE_STATUS_GOOD, 8)
+[+4.44s] DEBUG: scanner.vala:583: sane_control_option (11, SANE_ACTION_SET_VALUE, br-x=option.range.max=36.500000) -> (SANE_STATUS_GOOD)
+[+4.44s] DEBUG: scanner.vala:583: sane_control_option (12, SANE_ACTION_SET_VALUE, br-y=option.range.max=27.199997) -> (SANE_STATUS_GOOD)
+[+4.74s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+4.74s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.XNMBX3”: No such file or directory
+[+9.88s] DEBUG: simple-scan.vala:1841: Requesting scan at 300 dpi from device '12722a6aa885c736'
+[+9.88s] DEBUG: scanner.vala:1780: Scanner.scan ("12722a6aa885c736", dpi=300, scan_mode=ScanMode.COLOR, depth=8, type=single, side=both, paper_width=0, paper_height=0, brightness=0, contrast=0, delay=0ms)
+[+11.98s] DEBUG: scanner.vala:1345: sane_start (page=0, pass=0) -> SANE_STATUS_GOOD
+[+11.98s] DEBUG: scanner.vala:859: Processing request
+[+11.98s] DEBUG: scanner.vala:1409: Parameters: format=SANE_FRAME_RGB last_frame=SANE_TRUE bytes_per_line=1296 pixels_per_line=432 lines=322 depth=8
+[+11.98s] DEBUG: simple-scan.vala:1734: Page is 432 pixels wide, 322 pixels high, 8 bits per pixel
+[+12.10s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+12.10s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.BCIDX3”: No such file or directory
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (1297) -> (SANE_STATUS_GOOD, 1297)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+13.57s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2031)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (1857) -> (SANE_STATUS_GOOD, 1857)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+14.89s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1471)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2417) -> (SANE_STATUS_GOOD, 2417)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+16.33s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 911)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (1681) -> (SANE_STATUS_GOOD, 1681)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+17.78s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1647)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2241) -> (SANE_STATUS_GOOD, 2241)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+19.10s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1087)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (1505) -> (SANE_STATUS_GOOD, 1505)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.54s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1823)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2065) -> (SANE_STATUS_GOOD, 2065)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1295)
+[+20.97s] DEBUG: scanner.vala:1483: sane_read (2593) -> (SANE_STATUS_EOF, 0)
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (0)
+[+20.97s] DEBUG: scanner.vala:794: Option 0: name='(null)' title='Number of options' type=int size=4 cap=soft-detect
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (1)
+[+20.97s] DEBUG: scanner.vala:794: Option 1: name='(null)' title='Scan Mode' type=group size=1
+[+20.97s] DEBUG: autosave-manager.vala:363: Autosaving page pixels to /home/cschalle/.var/app/org.gnome.SimpleScan/cache/simple-scan/autosaves/3534404752.pixels
+[+20.97s] DEBUG: scanner.vala:797:   Description: 
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (2)
+[+20.97s] DEBUG: scanner.vala:794: Option 2: name='mode' title='Scan mode' type=string size=256 values=["Color", "Gray", "Infrared", "Color+Infrared"] cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Selects the scan mode. Color+Infrared returns two frames, the colour image and then its infrared plane (gray); scanimage cannot save it (it aborts on the second frame).
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (3)
+[+20.97s] DEBUG: scanner.vala:794: Option 3: name='depth' title='Bit depth' type=int size=4 values=[8, 16] cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Number of bits per sample, typical values are 1 for "line-art" and 8 for multibit scans.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (4)
+[+20.97s] DEBUG: scanner.vala:794: Option 4: name='resolution' title='Scan resolution' type=int size=4 unit=dpi values=[300, 600, 1200, 2400, 3600, 7200] cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Sets the resolution of the scanned image.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (5)
+[+20.97s] DEBUG: scanner.vala:794: Option 5: name='ir-clean' title='Infrared dust removal' type=bool size=4 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Make a second pass with infrared illumination and repair dust and scratches in the colour image. Doubles the scan time.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (6)
+[+20.97s] DEBUG: scanner.vala:794: Option 6: name='auto-wb' title='Automatic white balance' type=bool size=4 cap=soft-select,soft-detect,advanced
+[+20.97s] DEBUG: scanner.vala:797:   Description: Scale the colour channels so their means match. Off delivers the sensor's calibrated response unchanged, which negative conversion and colour profiling need: the balance otherwise varies with picture content and clips highlights.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (7)
+[+20.97s] DEBUG: scanner.vala:794: Option 7: name='exposure' title='Exposure' type=fixed size=4 min=1.000000, max=4.000000, quant=3276 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Light integration time as a multiple of the default. Raises every channel by the same factor; the carriage slows down to keep the geometry, so the scan takes proportionally longer. For dense negatives and dark slides.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (8)
+[+20.97s] DEBUG: scanner.vala:794: Option 8: name='(null)' title='Geometry' type=group size=1
+[+20.97s] DEBUG: scanner.vala:797:   Description: 
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (9)
+[+20.97s] DEBUG: scanner.vala:794: Option 9: name='tl-x' title='Top-left x' type=fixed size=4 unit=mm min=0.000000, max=36.500000, quant=0 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Top-left x position of scan area.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (10)
+[+20.97s] DEBUG: scanner.vala:794: Option 10: name='tl-y' title='Top-left y' type=fixed size=4 unit=mm min=0.000000, max=27.199997, quant=0 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Top-left y position of scan area.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (11)
+[+20.97s] DEBUG: scanner.vala:794: Option 11: name='br-x' title='Bottom-right x' type=fixed size=4 unit=mm min=0.000000, max=36.500000, quant=0 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Bottom-right x position of scan area.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (12)
+[+20.97s] DEBUG: scanner.vala:794: Option 12: name='br-y' title='Bottom-right y' type=fixed size=4 unit=mm min=0.000000, max=27.199997, quant=0 cap=soft-select,soft-detect
+[+20.97s] DEBUG: scanner.vala:797:   Description: Bottom-right y position of scan area.
+[+20.97s] DEBUG: scanner.vala:996: sane_get_option_descriptor (13)
+[+20.97s] DEBUG: autosave-manager.vala:295: Autosaving book information
+[+20.97s] DEBUG: autosave-manager.vala:312: Autosaving page page-0
+[+20.97s] DEBUG: scanner.vala:601: sane_control_option (2, SANE_ACTION_SET_VALUE, mode="Color") -> (SANE_STATUS_GOOD, "Color")
+[+20.97s] DEBUG: scanner.vala:513: sane_control_option (4, SANE_ACTION_SET_VALUE, resolution=300) -> (SANE_STATUS_GOOD, 300)
+[+20.97s] DEBUG: scanner.vala:513: sane_control_option (3, SANE_ACTION_SET_VALUE, depth=8) -> (SANE_STATUS_GOOD, 8)
+[+20.97s] DEBUG: scanner.vala:583: sane_control_option (11, SANE_ACTION_SET_VALUE, br-x=option.range.max=36.500000) -> (SANE_STATUS_GOOD)
+[+20.97s] DEBUG: scanner.vala:583: sane_control_option (12, SANE_ACTION_SET_VALUE, br-y=option.range.max=27.199997) -> (SANE_STATUS_GOOD)
+[+21.10s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+21.10s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.PTEDX3”: No such file or directory
+[+32.69s] DEBUG: scanner.vala:1345: sane_start (page=0, pass=0) -> SANE_STATUS_GOOD
+[+32.69s] DEBUG: scanner.vala:1409: Parameters: format=SANE_FRAME_RGB last_frame=SANE_TRUE bytes_per_line=1296 pixels_per_line=432 lines=322 depth=8
+[+32.69s] DEBUG: simple-scan.vala:1734: Page is 432 pixels wide, 322 pixels high, 8 bits per pixel
+[+32.82s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+32.82s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.STLCX3”: No such file or directory
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (1297) -> (SANE_STATUS_GOOD, 1297)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+34.28s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2031)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (1857) -> (SANE_STATUS_GOOD, 1857)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+35.60s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1471)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2417) -> (SANE_STATUS_GOOD, 2417)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+37.05s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 911)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (1681) -> (SANE_STATUS_GOOD, 1681)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+38.49s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1647)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2241) -> (SANE_STATUS_GOOD, 2241)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+39.81s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1087)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (1505) -> (SANE_STATUS_GOOD, 1505)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.26s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1823)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2065) -> (SANE_STATUS_GOOD, 2065)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 2592)
+[+41.68s] DEBUG: scanner.vala:1483: sane_read (2592) -> (SANE_STATUS_GOOD, 1295)
+[+41.69s] DEBUG: scanner.vala:1483: sane_read (2593) -> (SANE_STATUS_EOF, 0)
+[+41.69s] DEBUG: autosave-manager.vala:363: Autosaving page pixels to /home/cschalle/.var/app/org.gnome.SimpleScan/cache/simple-scan/autosaves/3686420544.pixels
+[+41.69s] DEBUG: autosave-manager.vala:295: Autosaving book information
+[+41.69s] DEBUG: autosave-manager.vala:312: Autosaving page page-0
+[+41.69s] DEBUG: autosave-manager.vala:312: Autosaving page page-1
+[+41.80s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+41.80s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.3KWCX3”: No such file or directory
+[+51.11s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+51.11s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.TWBDX3”: No such file or directory
+[+52.26s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+52.27s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.LBLMX3”: No such file or directory
+[+58.01s] DEBUG: app-window.vala:1585: Saving state to /home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state
+[+58.01s] WARNING: app-window.vala:1600: Failed to write state: Failed to create file “/home/cschalle/.var/app/org.gnome.SimpleScan/.local/state/simple-scan/state.KQRGX3”: No such file or directory

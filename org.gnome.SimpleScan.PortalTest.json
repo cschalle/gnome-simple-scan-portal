@@ -1,0 +1,69 @@
+{
+    "id": "org.gnome.SimpleScan",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "49",
+    "sdk": "org.gnome.Sdk",
+    "command": "simple-scan",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--talk-name=org.freedesktop.portal.Desktop",
+        "--talk-name=org.freedesktop.NvPortalProto",
+        "--env=SIMPLE_SCAN_BACKEND=portal",
+        "--env=SIMPLE_SCAN_PORTAL_BUS_NAME=org.freedesktop.NvPortalProto"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/aclocal",
+        "/share/gir-1.0",
+        "/share/girepository-1",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "/share/vala",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "libgusb",
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Ddocs=false"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/hughsie/libgusb.git",
+                    "commit": "ed31c8134d80d006bd45450e84180be2a7c0742e",
+                    "tag": "0.4.9"
+                }
+            ]
+        },
+        {
+            "name": "sane-backends",
+            "buildsystem": "autotools",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.com/sane-project/backends.git",
+                    "commit": "c7e4b5e35e3d614d2b1181d760a717bfc395a203",
+                    "tag": "1.4.0"
+                }
+            ]
+        },
+        {
+            "name": "simple-scan",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "simple-scan"
+                }
+            ]
+        }
+    ]
+}
