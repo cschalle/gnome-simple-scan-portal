@@ -1,6 +1,3 @@
-# The application port lives in its own clone, with its own history and
-# the upstream remote the merge request is made from.
-/simple-scan/
 
 # Build output
 /build-fp/

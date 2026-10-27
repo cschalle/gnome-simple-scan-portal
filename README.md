@@ -1,10 +1,11 @@
 # Simple Scan on the scanner portal (prototype)
 
-`simple-scan/` is a clone of GNOME Simple Scan (upstream bfa17c8, 50.0) with branch
-`scanner-portal`: commits that put libsane behind a `ScanBackend` interface and add
-`PortalBackend`, which talks to the draft `org.freedesktop.portal.Scanner` interface. This
-directory holds only the application port, its flatpak manifests and test results. The portal
-itself is in https://github.com/cschalle/flatpak-scanner-portal.
+`simple-scan/` is GNOME Simple Scan (upstream bfa17c8, 50.0) with the commits of the
+`scanner-portal` branch on top, imported with their history: they put libsane behind a
+`ScanBackend` interface and add `PortalBackend`, which talks to the draft
+`org.freedesktop.portal.Scanner` interface. The rest of the repository holds the flatpak
+manifests, the CI workflow and the test results. The portal itself is in
+https://github.com/cschalle/flatpak-scanner-portal.
 
 ## Where the portal code is
 

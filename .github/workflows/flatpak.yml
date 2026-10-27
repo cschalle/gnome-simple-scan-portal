@@ -6,20 +6,16 @@ on:
     branches: [main]
     paths:
       - 'final/**'
+      - 'simple-scan/**'
       - '*.json'
       - '.github/workflows/flatpak.yml'
   pull_request:
     paths:
       - 'final/**'
+      - 'simple-scan/**'
       - '*.json'
       - '.github/workflows/flatpak.yml'
   workflow_dispatch:
-
-env:
-  # The application port lives in its own clone (see .gitignore), which the
-  # manifests pull in as the "simple-scan" dir source.
-  SIMPLE_SCAN_REPO: https://github.com/cschalle/gnome-simple-scan-clone-.git
-  SIMPLE_SCAN_REF: scanner-portal
 
 jobs:
   flatpak:
@@ -35,9 +31,6 @@ jobs:
           - org.gnome.SimpleScan.PortalTest.json
     steps:
       - uses: actions/checkout@v4
-
-      - name: Fetch the Simple Scan port
-        run: git clone --depth 1 --branch "$SIMPLE_SCAN_REF" "$SIMPLE_SCAN_REPO" simple-scan
 
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
