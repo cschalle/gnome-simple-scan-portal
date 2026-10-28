@@ -22,6 +22,9 @@ public class PortalBackend : Object, ScanBackend
     /* How long to wait for the user to choose a scanner, and for a frame to start (lamp warm-up) */
     private const int64 SELECT_TIMEOUT_US = 10 * 60 * 1000000;
     private const int64 START_TIMEOUT_US = 120 * 1000000;
+    /* OpenScanner answers when the scanner is open: seconds for USB, and for a network scanner more
+     * than D-Bus's default call timeout */
+    private const int64 OPEN_TIMEOUT_US = 120 * 1000000;
     private const int64 FINISH_TIMEOUT_US = 20 * 1000000;
     private const int CALL_TIMEOUT_MS = 120000;
 
@@ -164,6 +167,23 @@ public class PortalBackend : Object, ScanBackend
         return v != null ? v.get_string () : null;
     }
 
+    /* The portal says what a device is in its own words: scanner, film, camera or virtual. Scanner
+     * filters on the strings libsane uses, so translate. */
+    private static string type_of_device (string? portal_type)
+    {
+        switch (portal_type)
+        {
+        case "virtual":
+            return "virtual device";
+        case "film":
+            return "film scanner";
+        case "camera":
+            return "video camera";
+        default:
+            return "scanner";
+        }
+    }
+
     /* Ask the user which scanners the application may use, and wait for the answer */
     private bool select_scanners ()
     {
@@ -220,7 +240,7 @@ public class PortalBackend : Object, ScanBackend
                 var details = scanner.get_child_value (1);
                 info.vendor = dict_string (details, "vendor") ?? "";
                 info.model = dict_string (details, "model") ?? dict_string (details, "name") ?? info.name;
-                info.type = dict_string (details, "type") ?? dict_string (details, "kind") ?? "";
+                info.type = type_of_device (dict_string (details, "type"));
                 list.append (info);
             }
             return Sane.Status.GOOD;
@@ -255,16 +275,48 @@ public class PortalBackend : Object, ScanBackend
 
     public Sane.Status open (string device)
     {
+        /* OpenScanner is a request: the call returns at once, and the Response says when the
+         * scanner is open */
+        var token = "simple_scan%d".printf (++request_counter);
+        var request_path = "%s/request/%s/%s".printf (PORTAL_PATH, bus.get_unique_name ().substring (1).replace (".", "_"), token);
+
+        while (responses.try_pop () != null);
+        var subscription = bus.signal_subscribe (bus_name, REQUEST_IFACE, "Response", request_path, null,
+                                                 DBusSignalFlags.NONE, response_cb);
         try
         {
-            var reply = call ("OpenScanner", new Variant ("(s@a{sv})", device, empty_dict ()));
-            session = reply.get_child_value (0).get_string ();
+            var opts = new VariantBuilder (new VariantType ("a{sv}"));
+            opts.add ("{sv}", "handle_token", new Variant.string (token));
+            call ("OpenScanner", new Variant ("(sa{sv})", device, opts));
+
+            var response = responses.timeout_pop (OPEN_TIMEOUT_US);
+            if (response == null)
+            {
+                warning ("No answer to OpenScanner");
+                return Sane.Status.IO_ERROR;
+            }
+            uint code;
+            Variant results;
+            response.get ("(u@a{sv})", out code, out results);
+            if (code != 0)
+            {
+                var reason = dict_string (results, "error");
+                warning ("Unable to open scanner: %s (%s)", dict_string (results, "message") ?? "", reason ?? "unknown");
+                return reason == "busy" ? Sane.Status.DEVICE_BUSY : Sane.Status.IO_ERROR;
+            }
+            session = dict_string (results, "session_handle");
             debug ("OpenScanner (\"%s\") -> %s", device, session);
+            if (session == null)
+                return Sane.Status.IO_ERROR;
         }
         catch (Error e)
         {
             warning ("Unable to open scanner: %s", e.message);
             return status_of_error (e);
+        }
+        finally
+        {
+            bus.signal_unsubscribe (subscription);
         }
 
         while (frame_events.try_pop () != null);
