@@ -45,6 +45,8 @@ public class PortalBackend : Object, ScanBackend
     /* The number of the latest frame whose end was seen: events numbered at or below it belong to
      * a frame that is over, such as one that was cancelled, and are dropped. */
     private uint32 done_frame;
+    /* The number of the latest frame started, which Cancel names */
+    private uint32 current_frame;
 
     private string? session;
     private ScanOption[]? options;
@@ -167,18 +169,16 @@ public class PortalBackend : Object, ScanBackend
         return v != null ? v.get_string () : null;
     }
 
-    /* The portal says what a device is in its own words: scanner, film, camera or virtual. Scanner
-     * filters on the strings libsane uses, so translate. */
+    /* The portal says what a device is in its own words: scanner, film or other. Scanner filters on
+     * the strings libsane uses, so translate. A value that a later portal adds is taken for a scanner. */
     private static string type_of_device (string? portal_type)
     {
         switch (portal_type)
         {
-        case "virtual":
+        case "other":
             return "virtual device";
         case "film":
             return "film scanner";
-        case "camera":
-            return "video camera";
         default:
             return "scanner";
         }
@@ -199,7 +199,7 @@ public class PortalBackend : Object, ScanBackend
             opts.add ("{sv}", "handle_token", new Variant.string (token));
             opts.add ("{sv}", "multiple", new Variant.boolean (true));
             /* Scanners for documents: the portal does not offer film scanners, which are for negatives */
-            opts.add ("{sv}", "any_capabilities", new Variant.strv ({ "flatbed", "adf" }));
+            opts.add ("{sv}", "any_capabilities", new Variant.strv ({ "flatbed", "feeder" }));
             call ("SelectScanners", new Variant ("(sa{sv})", "", opts));
 
             var response = responses.timeout_pop (SELECT_TIMEOUT_US);
@@ -350,7 +350,7 @@ public class PortalBackend : Object, ScanBackend
 
         try
         {
-            call ("Cancel", new Variant ("(o)", session));
+            call ("Cancel", new Variant ("(ou)", session, current_frame));
         }
         catch (Error e)
         {
@@ -725,9 +725,10 @@ public class PortalBackend : Object, ScanBackend
         {
             var reply = bus.call_with_unix_fd_list_sync (bus_name, PORTAL_PATH, SCANNER_IFACE, "StartFrame",
                                                          new Variant ("(o@a{sv})", session, empty_dict ()),
-                                                         new VariantType ("(h)"), DBusCallFlags.NONE, CALL_TIMEOUT_MS,
+                                                         new VariantType ("(hu)"), DBusCallFlags.NONE, CALL_TIMEOUT_MS,
                                                          null, out fds);
             pipe_fd = fds.get (reply.get_child_value (0).get_handle ());
+            current_frame = reply.get_child_value (1).get_uint32 ();
         }
         catch (Error e)
         {
