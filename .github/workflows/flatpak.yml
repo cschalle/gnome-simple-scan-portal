@@ -17,8 +17,13 @@ on:
       - '.github/workflows/flatpak.yml'
   workflow_dispatch:
 
+concurrency:
+  group: flatpak-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  flatpak:
+  build:
+    name: Build ${{ matrix.name }}
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-49
@@ -26,15 +31,49 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        manifest:
-          - org.gnome.SimpleScan.Portal.json
-          - org.gnome.SimpleScan.PortalTest.json
+        include:
+          - name: portal
+            manifest: org.gnome.SimpleScan.Portal.json
+          - name: portaltest
+            manifest: org.gnome.SimpleScan.PortalTest.json
     steps:
       - uses: actions/checkout@v4
 
       - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
-          bundle: simple-scan-${{ matrix.manifest }}.flatpak
+          bundle: simple-scan-${{ matrix.name }}.flatpak
           manifest-path: ${{ matrix.manifest }}
-          cache-key: flatpak-builder-${{ matrix.manifest }}-${{ github.sha }}
+          cache-key: flatpak-builder-${{ matrix.name }}-${{ github.sha }}
           restore-cache: true
+          upload-artifact: false
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: simple-scan-${{ matrix.name }}-flatpak
+          path: simple-scan-${{ matrix.name }}.flatpak
+          if-no-files-found: error
+
+  publish:
+    name: Publish
+    needs: build
+    # Pull requests build only; main publishes.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: simple-scan-*-flatpak
+          merge-multiple: true
+
+      # A rolling "latest" release holds the installable bundles.
+      - name: Update the latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes || true
+          gh release create latest simple-scan-*.flatpak --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" --prerelease \
+            --title "Latest build" \
+            --notes "Built from ${GITHUB_SHA::7}. Install with: flatpak install --user simple-scan-portal.flatpak"
