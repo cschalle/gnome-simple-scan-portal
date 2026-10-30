@@ -674,7 +674,7 @@ public class PortalBackend : Object, ScanBackend
         parameters.pixels_per_line = (int) d.lookup_value ("pixels_per_line", VariantType.UINT32).get_uint32 ();
         parameters.bytes_per_line = (int) d.lookup_value ("bytes_per_line", VariantType.UINT32).get_uint32 ();
         parameters.lines = d.lookup_value ("lines", VariantType.INT32).get_int32 ();
-        parameters.last_frame = d.lookup_value ("last_frame", VariantType.BOOLEAN).get_boolean ();
+        parameters.last_frame = d.lookup_value ("last_in_image", VariantType.BOOLEAN).get_boolean ();
         return Sane.Status.GOOD;
     }
 
