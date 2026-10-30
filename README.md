@@ -32,6 +32,21 @@ The port follows the draft as of the second change round (automatic values as th
 listing (`UpdateScanners`). Simple Scan asks for all scanners with no capability filter, and
 it skips scanners whose type is `virtual device`, so the SANE `test` backend is invisible to it.
 
+## Download
+
+CI builds the flatpaks on every push to `main` and attaches them to the rolling
+[latest release](https://github.com/cschalle/gnome-simple-scan-portal/releases/tag/latest):
+
+- `simple-scan-portal.flatpak`: the app that uses the scanner portal on the desktop.
+- `simple-scan-portaltest.flatpak`: the test build, which needs the prototype service on the host
+  (see below).
+
+Install one with
+
+    flatpak install --user simple-scan-portal.flatpak
+
+Pull requests upload their bundles as workflow artifacts instead.
+
 ## Build and run
 
 Build from this directory (needs GNOME Platform/Sdk 49):
