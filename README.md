@@ -7,6 +7,30 @@
 manifests, the CI workflow and the test results. The portal itself is in
 https://github.com/cschalle/flatpak-scanner-portal.
 
+## Screenshots
+
+![Simple Scan in a Flatpak with no scanner allowed yet: the list is empty and a + button asks the portal](screenshots/no-scanner-allowed.png)
+
+*The port in the Flatpak, without `--device=all` and without `--share=network`, talking to the
+prototype service. An application that goes through the portal sees only the scanners the user
+has allowed it, so it starts with an empty list instead of everything libsane can find. The
+**+** beside the scanner chooser is what the port adds: it calls `SelectScanners`, and the
+portal, not the application, decides what comes back.*
+
+![The same window after the portal granted an HP network scanner, showing Ready to Scan](screenshots/scanner-allowed.png)
+
+*After **+**. The portal granted one scanner and the port can use it; everything else on the
+machine stays invisible to it. The scan itself runs in the service on the host, so the sandbox
+still needs no network of its own and no access to any device node. Note that the other scanner
+here, a Plustek OpticFilm 8200i, is not offered: the port asks for `flatbed` or `feeder`, and a
+film scanner has neither.*
+
+![A page scanned on the HP through the portal, shown in the port's window](screenshots/scanned-page.png)
+
+*A 300 dpi colour scan, 2550 x 3508, made through the portal. The application never opened the
+scanner itself: it asked the portal for a session, set its options and read the frame over
+D-Bus, inside a sandbox with no device access and no network.*
+
 ## Where the portal code is
 
 The portal is in https://github.com/cschalle/flatpak-scanner-portal:
@@ -29,8 +53,10 @@ repository; those branches are not pushed.
 
 The port follows the draft as of the second change round (automatic values as the vardict
 `{'auto': true}`, a `frame` number on `FrameEvent`, `type` in the scanner info) and the two-phase
-listing (`UpdateScanners`). Simple Scan asks for all scanners with no capability filter, and
-it skips scanners whose type is `virtual device`, so the SANE `test` backend is invisible to it.
+listing (`UpdateScanners`). Simple Scan asks for scanners with the `flatbed` or `feeder`
+capability, and it skips scanners whose type is `virtual device` or `film scanner`. So neither
+the SANE `test` backend nor a film scanner is visible to it, and a machine that has only one of
+those has nothing the port will take.
 
 ## Download
 
@@ -68,6 +94,10 @@ backend), then
 `--env=GSETTINGS_BACKEND=memory` and XDG_* overrides to leave `~/.var/app` alone. A scan writes
 autosaved pages to `~/.var/app/org.gnome.SimpleScan/cache/simple-scan/autosaves/` whatever the
 overrides are.
+
+A network scanner needs `--network`. Without it the service asks libsane for local devices
+only, so an eSCL or WSD scanner is discovered by the backend and then dropped before any
+application sees it, and `SelectScanners` comes back with nothing granted.
 
 Never open all SANE devices with the system configuration on a Plustek OpticFilm 8200i: the
 stock `genesys` entry for it resets the scanner. Use a private `SANE_CONFIG_DIR`.
